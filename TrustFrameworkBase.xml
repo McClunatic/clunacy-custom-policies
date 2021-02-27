@@ -1041,11 +1041,10 @@
           <Metadata>
             <Item Key="ServiceUrl">https://clunacy-azure-functions.azurewebsites.net/api/groups/{userId}</Item>
             <Item Key="SendClaimsIn">Url</Item>
-            <Item Key="AuthenticationType">None</Item>
-            <Item Key="AllowInsecureAuthInProduction">true</Item>
+            <Item Key="AuthenticationType">Bearer</Item>
+            <Item Key="AllowInsecureAuthInProduction">false</Item>
             <Item Key="UseClaimAsBearerToken">bearerToken</Item>
             <Item Key="IncludeClaimResolvingInClaimsHandling">true</Item>
-            <Item Key="ResolveJsonPathsInJsonTokens">true</Item>
           </Metadata>
           <InputClaims>
             <InputClaim
@@ -1053,7 +1052,7 @@
               ClaimTypeReferenceId="objectId"
               PartnerClaimType="userId"
             />
-            <InputClaim ClaimTypeReferenceId="bearerToken"/>
+            <InputClaim ClaimTypeReferenceId="bearerToken" />
           </InputClaims>
           <OutputClaims>
             <OutputClaim ClaimTypeReferenceId="groups" />
@@ -1071,7 +1070,7 @@
           <DisplayName></DisplayName>
           <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.RestfulProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
           <Metadata>
-            <Item Key="ServiceUrl">https://login.microsoftonline.com/clunacy.onmicrosoft.com/oauth2/v2.0/token</Item>
+            <Item Key="ServiceUrl">https://login.microsoftonline.com/07f0848e-60d0-4c23-8482-cebd7ab04d72/oauth2/v2.0/token</Item>
             <Item Key="AuthenticationType">Basic</Item>
             <Item Key="SendClaimsIn">Form</Item>
           </Metadata>
@@ -1081,7 +1080,7 @@
           </CryptographicKeys>
           <InputClaims>
             <InputClaim ClaimTypeReferenceId="grant_type" DefaultValue="client_credentials" />
-            <InputClaim ClaimTypeReferenceId="scope" DefaultValue="https://clunacy-azure-functions.azurewebsites.net/.default" />
+            <InputClaim ClaimTypeReferenceId="scope" DefaultValue="https://clunacy.onmicrosoft.com/382b58c4-60a3-4a2c-bd43-05692e40c15d/.default" />
           </InputClaims>
           <OutputClaims>
             <OutputClaim ClaimTypeReferenceId="bearerToken" PartnerClaimType="access_token" />
@@ -1183,11 +1182,17 @@
 
         <OrchestrationStep Order="7" Type="ClaimsExchange">
           <ClaimsExchanges>
+            <ClaimsExchange Id="RESTAPIAccessToken" TechnicalProfileReferenceId="RESTAPIAccessToken" />
+          </ClaimsExchanges>
+        </OrchestrationStep>
+ 
+        <OrchestrationStep Order="8" Type="ClaimsExchange">
+          <ClaimsExchanges>
             <ClaimsExchange Id="GetUserGroups" TechnicalProfileReferenceId="GetUserGroups" />
           </ClaimsExchanges>
         </OrchestrationStep>
  
-        <OrchestrationStep Order="8" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
+        <OrchestrationStep Order="9" Type="SendClaims" CpimIssuerTechnicalProfileReferenceId="JwtIssuer" />
  
       </OrchestrationSteps>
       <ClientDefinition ReferenceId="DefaultWeb" />
