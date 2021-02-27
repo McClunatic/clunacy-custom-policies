@@ -12,27 +12,10 @@
     <TenantId>clunacy.onmicrosoft.com</TenantId>
     <PolicyId>B2C_1A_TrustFrameworkBase</PolicyId>
   </BasePolicy>
- <BuildingBlocks>
+ <!--BuildingBlocks>
     <ClaimsSchema>
-      <ClaimType Id="groups">
-        <DisplayName>Comma-delimited list of groups</DisplayName>
-        <DataType>stringCollection</DataType>
-        <UserInputType>Readonly</UserInputType>
-      </ClaimType>
-      <ClaimType Id="bearerToken">
-        <DisplayName>Bearer token</DisplayName>
-        <DataType>string</DataType>
-      </ClaimType>
-      <ClaimType Id="grant_type">
-        <DisplayName>Grant type</DisplayName>
-        <DataType>string</DataType>
-      </ClaimType>
-      <ClaimType Id="scope">
-        <DisplayName>scope</DisplayName>
-        <DataType>string</DataType>
-      </ClaimType>
     </ClaimsSchema>
-  </BuildingBlocks>
+  </BuildingBlocks-->
 
   <ClaimsProviders>
 
@@ -66,77 +49,9 @@
       </TechnicalProfiles>
     </ClaimsProvider>
 
-    <ClaimsProvider>
-      <DisplayName>Rest APIs</DisplayName>
-      <TechnicalProfiles>
-
-        <TechnicalProfile Id="GetUserGroups">
-          <DisplayName>Retrieves security groups assigned to the user</DisplayName>
-          <Protocol
-            Name="Proprietary"
-            Handler="Web.TPEngine.Providers.RestfulProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-          />
-          <Metadata>
-            <Item Key="ServiceUrl">https://clunacy-azure-functions.azurewebsites.net/api/groups/{userId}</Item>
-            <Item Key="SendClaimsIn">Url</Item>
-            <Item Key="AuthenticationType">None</Item>
-            <Item Key="AllowInsecureAuthInProduction">true</Item>
-          </Metadata>
-          <InputClaims>
-            <InputClaim
-              Required="true"
-              ClaimTypeReferenceId="objectId"
-              PartnerClaimType="userId"
-            />
-          </InputClaims>
-          <OutputClaims>
-            <OutputClaim ClaimTypeReferenceId="groups" />
-          </OutputClaims>
-          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
-        </TechnicalProfile>
-
-      </TechnicalProfiles>
-    </ClaimsProvider>
-    <ClaimsProvider>
-      <DisplayName>Secure Rest API Access</DisplayName>
-      <TechnicalProfiles>
-
-        <TechnicalProfile Id="RESTAPIAccessToken">
-          <DisplayName></DisplayName>
-          <Protocol Name="Proprietary" Handler="Web.TPEngine.Providers.RestfulProvider, Web.TPEngine, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
-          <Metadata>
-            <Item Key="ServiceUrl">https://login.microsoftonline.com/clunacy.onmicrosoft.com/oauth2/v2.0/token</Item>
-            <Item Key="AuthenticationType">Basic</Item>
-            <Item Key="SendClaimsIn">Form</Item>
-          </Metadata>
-          <CryptographicKeys>
-            <Key Id="BasicAuthenticationUsername" StorageReferenceId="B2C_1A_PaperScope6AppId" />
-            <Key Id="BasicAuthenticationPassword" StorageReferenceId="B2C_1A_PaperScope6AppSecret" />
-          </CryptographicKeys>
-          <InputClaims>
-            <InputClaim ClaimTypeReferenceId="grant_type" DefaultValue="client_credentials" />
-            <InputClaim ClaimTypeReferenceId="scope" DefaultValue="https://clunacy-azure-functions.azurewebsites.net/.default" />
-          </InputClaims>
-          <OutputClaims>
-            <OutputClaim ClaimTypeReferenceId="bearerToken" PartnerClaimType="access_token" />
-          </OutputClaims>
-          <UseTechnicalProfileForSessionManagement ReferenceId="SM-Noop" />
-        </TechnicalProfile>
-
-      </TechnicalProfiles>
-    </ClaimsProvider>
   </ClaimsProviders>
 
-  <UserJourneys>
-    <UserJourney Id="SignUpOrSignIn">
-      <OrchestrationSteps>
-        <OrchestrationStep Order="6" Type="ClaimsExchange">
-          <ClaimsExchanges>
-            <ClaimsExchange Id="GetUserGroups" TechnicalProfileReferenceId="GetUserGroups" />
-          </ClaimsExchanges>
-        </OrchestrationStep>
-      </OrchestrationSteps>
-    </UserJourney>
-	</UserJourneys>
+  <!--UserJourneys>
+	</UserJourneys-->
 
 </TrustFrameworkPolicy>
